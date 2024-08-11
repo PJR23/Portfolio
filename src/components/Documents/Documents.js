@@ -58,7 +58,7 @@ function Documents({ particlesEnabled }) {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       console.log('Files fetched:', response.data); // Überprüfen Sie hier die Antwort
-      setFiles(response.data.files);
+      setFiles(response.data.files || []);
       setError('');
     } catch (error) {
       console.error('Error fetching files:', error);
