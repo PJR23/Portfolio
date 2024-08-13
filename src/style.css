@@ -19,11 +19,22 @@
   --filter-icon-stroke: #000;
 
   --file-item-bg: rgba(212, 212, 212, 0.7);
+
+
+  --accordion-header-bg: rgba(white);
+
+  --accordion-body-bg: rgba(217, 217, 217, 0.7);
+
+
+  --langswitch-bg: rgba(212, 212, 212, 0.7);
+
   --file-item-border: 2px solid rgba(0, 0, 0, 0.1);
 
   --login-form-input: rgb(201, 201, 201);
 
   --time-line-item: rgba(0, 0, 0, 0.75);
+
+  --tech-bar-bg: #b9b9b9;
 
 }
 
@@ -50,6 +61,14 @@ body.dark-mode {
   --file-item-bg: rgba(0, 0, 0, 0.7);
   --file-item-border: 2px solid rgba(0, 0, 0, 0.1);
 
+  --tech-bar-bg: #e0e0e0;
+  
+  --langswitch-bg: rgba(38, 38, 38, 0.7);
+
+
+  --accordion-header-bg: rgba(0, 0, 0, 0.7);
+  --accordion-body-bg: rgba(38, 38, 38, 0.7);
+
   --login-form-input: rgba(255, 255, 255, 0.1);
 
   --time-line-item: rgba(255, 255, 255, 0.75);
@@ -69,6 +88,8 @@ html {
     rgba(17, 16, 16, 0.678),
     rgba(12, 10, 22, 0.863)
   );
+
+  /* --imp-text-color: #3f29e3; */
 
   --imp-text-color: #c770f0;
 }
@@ -640,13 +661,14 @@ button:focus {
   max-width: 500px;
   text-align: center;
   opacity: 0;
-  transform: translateY(20px);
+
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
 }
 
 .tech-item.visible {
   opacity: 1;
-  transform: translateY(0);
+
 }
 
 .tech-icon {
@@ -661,7 +683,7 @@ button:focus {
 
 .tech-bar {
   width: 100%;
-  background-color: #e0e0e0;
+  background-color: var(--tech-bar-bg);
   border-radius: 5px;
   overflow: hidden;
   margin-top: 10px;
@@ -1674,10 +1696,14 @@ button:focus {
   padding: 8px 16px;
   font-size: 16px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px;
   width: 150px; /* Kann nach Bedarf angepasst werden */
   text-align: left;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-toggle-open {
+  border-radius: 6px 6px 0px 0px;
 }
 
 .dropdown-toggle:hover {
@@ -1688,8 +1714,7 @@ button:focus {
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: var(--file-item-bg);
-  border: var(--file-item-border);
+  background-color: var(--langswitch-bg);
   backdrop-filter: var(--sticky-blur);
   border-top: none; /* Entferne den oberen Rand */
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
@@ -1699,15 +1724,67 @@ button:focus {
   padding: 0;
   margin: 0;
   color: var(--text-color);
-  border-radius: 0 0 10px 10px; /* Runde Ecken unten */
+  border-radius: 0px 0px 6px 6px; /* Runde Ecken unten */
 }
 
 .dropdown-item-custom {
   padding: 10px 16px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-menu-custom li:last-child {
+  border-radius: 0px 0px 6px 6px;
+
 }
 
 .dropdown-item-custom:hover {
   background-color: var(--inputbar-glow);
+}
+
+
+.custom-accordion {
+  width: 100%;
+  margin: auto;
+}
+
+.accordion-section {
+  border: var(--file-item-border);
+  border-radius: 10px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.accordion-header {
+  padding: 15px;
+  background-color: var(--accordion-header-bg);
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion-toggle-icon {
+  transition: transform 0.3s ease;
+  color: var(--text-color);
+}
+
+.accordion-toggle-icon.open {
+  transform: rotate(180deg);
+}
+
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  background-color: var( --accordion-body-bg);
+  transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+}
+
+.accordion-body.open {
+  max-height: 1000px; /* Stellen Sie sicher, dass dies groß genug ist, um den Inhalt vollständig zu zeigen */
+  background-color: var( --accordion-body-bg);
+  padding: 15px; 
 }
