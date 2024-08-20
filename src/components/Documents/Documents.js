@@ -6,6 +6,7 @@ import Login from "../Login";
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+import { FiDownload } from "react-icons/fi"; // Icon importiert
 
 function Documents({ particlesEnabled }) {
   const { t } = useTranslation();
@@ -22,18 +23,19 @@ function Documents({ particlesEnabled }) {
 
   const supportedFileTypes = ['pdf', 'jpg', 'jpeg', 'png'];
 
+  // const API_BASE_URL = 'http://localhost:3000';
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
     setWidth(window.innerWidth);
-  }, []);
+    fetchFiles();
+  }, [role], []);
 
   useEffect(() => {
     if (token) {
       localStorage.setItem('token', token);
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       setRole(decodedToken.role);
-      fetchFiles();
       const intervalId = startTokenRenewal();
 
       document.addEventListener("visibilitychange", handleVisibilityChange);
@@ -113,26 +115,34 @@ function Documents({ particlesEnabled }) {
   };
 
   const handleDownloadZip = async (selectedFiles) => {
-    try {
-      const response = await axios.post(`${API_BASE_URL}/api/download-zip`, { files: selectedFiles }, {
-        headers: { 'Authorization': `Bearer ${token}` },
-        responseType: 'blob'
-      });
+    if (selectedFiles.length === 0) return; // Falls keine Datei ausgewählt ist, nichts tun
 
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'files.zip');
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+    try {
+        const response = await axios.post(`${API_BASE_URL}/api/download-zip`, { files: selectedFiles }, {
+            headers: { 'Authorization': `Bearer ${token}` },
+            responseType: 'blob'
+        });
+
+        // Bestimme den Dateinamen basierend auf der Anzahl der Dateien
+        const fileName = selectedFiles.length === 1 ? selectedFiles[0].split('/').pop() : 'files.zip';
+
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', fileName);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('Error downloading zip:', error);
-      if (error.response && error.response.status === 401) {
-        setToken(null);
-      }
+        console.error('Error downloading file or zip:', error);
+        if (error.response && error.response.status === 401) {
+            setToken(null);
+        }
     }
   };
+
+
 
   const handleDownloadSelected = () => {
     if (selectedFiles.length > 0) {
@@ -146,6 +156,11 @@ function Documents({ particlesEnabled }) {
       handleDownloadZip(allStoredNames);
     }
   };
+
+  const handleDirectDownload = (filePath) => {
+    handleDownloadZip([filePath]);
+  };
+
 
   const renewToken = async () => {
     try {
@@ -303,6 +318,13 @@ function Documents({ particlesEnabled }) {
                         disabled={!supportedFileTypes.includes(file.fileName.split('.').pop().toLowerCase())}
                       >
                         {t('preview')}
+                      </Button>
+                      <Button
+                        style={{margin: "5px"}}
+                        variant="secondary"
+                        onClick={() => handleDirectDownload(file.fileName)}
+                      >
+                        <FiDownload />
                       </Button>
                     </div>
                   ))}

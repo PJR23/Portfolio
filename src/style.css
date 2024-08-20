@@ -89,7 +89,7 @@ html {
     rgba(12, 10, 22, 0.863)
   );
 
-  /* --imp-text-color: #3f29e3; */
+  /* --imp-text-color: rgb(255, 255, 0);  */
 
   --imp-text-color: #c770f0;
 }
