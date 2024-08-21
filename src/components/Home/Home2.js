@@ -9,6 +9,8 @@ import {
 } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
 import { useTranslation } from 'react-i18next';
+import pupu from "../../Assets/pupu.png";
+
 
 function Home2() {
   const { t } = useTranslation();
@@ -54,11 +56,14 @@ function Home2() {
               {t('development')}
             </p>
           </Col>
-          <Col md={4} className="myAvtar">
+          <Col md={4} className="myAvtar" style={{ position: "relative", textAlign: "center" }}>
             <Tilt>
-              <img src={myImg} className="img-fluid" alt="avatar" />
+              <img src={pupu} className="myAvatar-img"/>            
+              <div className="myAvatar-circle"  />
             </Tilt>
+
           </Col>
+
         </Row>
         <Row>
           <Col md={12} className="home-about-social">

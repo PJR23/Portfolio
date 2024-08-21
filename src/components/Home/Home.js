@@ -12,8 +12,9 @@ function Home({ particlesEnabled }) {
   return (
     <section>
       <Container fluid className="home-section" id="home">
-      {particlesEnabled && <Particle />}
-        <Container className="home-content">
+      {particlesEnabled && <Particle />}              
+        <Container className="home-content">            
+
           <Row>
             <Col md={7} className="home-header">
               <h1 style={{ paddingBottom: 15 }} className="heading">

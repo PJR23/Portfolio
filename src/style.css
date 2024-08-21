@@ -402,7 +402,33 @@ button:focus {
 .myAvtar {
   justify-content: center !important;
   padding-top: 9em !important;
+
 }
+
+.myAvatar-img {
+  width: 250px;
+  user-select: none;
+  -webkit-user-drag: none;
+  border-radius: 200px;
+  z-index: 200;
+}
+
+
+
+.myAvatar-circle {
+  width: 250px;
+  height: 250px;
+  border-radius: 200px;
+  z-index: 1;
+  background-color: #8a4ca8;
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: -2;
+}
+
+
 
 @media (max-width: 767px) {
   .myAvtar {
