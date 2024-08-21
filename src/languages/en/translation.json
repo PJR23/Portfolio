@@ -127,5 +127,16 @@
 
     "footer_design": "Designed and Developed by Paul Rehbein",
     "footer_copyright": "Copyright ©",
-    "footer_name": "Paul Rehbein"
+    "footer_name": "Paul Rehbein",
+
+
+    "average": "Average",
+    "skills": {
+        "web_development": "Web Development",
+        "app_development": "App Development",
+        "programming_languages": "Programming Languages",
+        "databases": "Databases",
+        "cloud_devops": "Cloud & DevOps",
+        "tools_extensions": "Tools & Extensions"
+      }
 }
