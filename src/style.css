@@ -89,7 +89,7 @@ html {
     rgba(12, 10, 22, 0.863)
   );
 
-  /* --imp-text-color: rgb(255, 255, 0);  */
+  /* --imp-text-color: rgb(0, 0, 0);  */
 
   --imp-text-color: #c770f0;
 }
@@ -393,10 +393,9 @@ button:focus {
   .Typewriter__wrapper {
     font-size: 1.4em !important;
     font-weight: 500 !important;
-    position: absolute !important;
   }
   .Typewriter__cursor {
-    display: none !important;
+    font-size: 1.6em!important;
   }
 }
 
@@ -1784,7 +1783,37 @@ button:focus {
 }
 
 .accordion-body.open {
-  max-height: 1000px; /* Stellen Sie sicher, dass dies groß genug ist, um den Inhalt vollständig zu zeigen */
+  max-height: 1000px;
   background-color: var( --accordion-body-bg);
   padding: 15px; 
+}
+
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+}
+
+.accordion-body.open {
+  max-height: 1000px;
+}
+
+.average-text {
+  height: 100px;
+  text-justify: center;
+  margin-top: "10px"; 
+  text-align: "center"; 
+}
+
+.average-text .Typewriter__wrapper {
+  position: relative!important;
+  font-size: 2.2em !important;
+  color: #be6adf !important;
+  font-weight: 600 !important;
+}
+
+.average-text .Typewriter__cursor {
+  font-size: 2.4em !important;
+  color: #b562d6 !important;
+  display:inline!important;
 }

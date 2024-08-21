@@ -1,41 +1,67 @@
 import React from 'react';
 import CustomAccordion from './CustomAccordion'; 
-import { DiJavascript1, DiReact, DiNodejs, DiMongodb, DiPython, DiGit, DiJava, DiMysql } from 'react-icons/di';
-import { SiNextdotjs, SiRedis, SiSqlite, SiHtml5, SiCss3, SiCsharp } from 'react-icons/si';
+import { SiNextdotjs, SiJavascript, SiReact, SiGit, SiMysql, SiMongodb, SiPython, SiRedis, SiSqlite, SiHtml5, SiCss3, SiMicrosoftazure, SiCsharp, SiDocker, SiKubernetes, SiPortainer, SiAzuredevops, SiAmazonaws, SiGitlab, SiGithub, SiFirebase, SiExpress, SiPostgresql, SiPhp, SiFlask, SiDotnet } from 'react-icons/si';
+import { FaNodeJs, FaJava } from "react-icons/fa";
 
 const skillCategories = [
   {
-    category: "Frontend",
+    category: "Web Development",
     skills: [
-      { icon: <DiJavascript1 />, name: "JavaScript", level: 90 },
-      { icon: <DiReact />, name: "React", level: 90 },
+      { icon: <SiJavascript />, name: "JavaScript", level: 90 },
+      { icon: <SiReact />, name: "React", level: 90 },
       { icon: <SiNextdotjs />, name: "Next.js", level: 80 },
       { icon: <SiHtml5 />, name: "HTML", level: 95 },
       { icon: <SiCss3 />, name: "CSS", level: 90 },
+      { icon: <FaNodeJs />, name: "Node.js", level: 85 },
+      { icon: <SiExpress />, name: "Express.js", level: 80 },
+      { icon: <SiFlask />, name: "Flask", level: 80 }, // Flask hinzugefügt
     ],
   },
   {
-    category: "Backend",
+    category: "App Development",
     skills: [
-      { icon: <DiNodejs />, name: "Node.js", level: 85 },
-      { icon: <DiPython />, name: "Python", level: 90 },
-      { icon: <DiJava />, name: "Java", level: 80 },
-      { icon: <DiGit />, name: "Git", level: 95 },
+      { icon: <SiReact />, name: "React Native", level: 90 },
+      { icon: <SiDotnet />, name: ".NET MAUI", level: 70 }, // .NET MAUI in App Development verschoben
+    ],
+  },
+  {
+    category: "Programming Languages",
+    skills: [
+      { icon: <SiPython />, name: "Python", level: 90 },
+      { icon: <FaJava />, name: "Java", level: 80 },
+      { icon: <SiCsharp />, name: "C#", level: 80 },
+      { icon: <SiPhp />, name: "PHP", level: 80 },
+      { icon: <SiDotnet />, name: ".NET", level: 75 }, // .NET als Programmiersprache
     ],
   },
   {
     category: "Databases",
     skills: [
-      { icon: <DiMongodb />, name: "MongoDB", level: 75 },
-      { icon: <DiMysql />, name: "MySQL", level: 85 },
+      { icon: <SiMongodb />, name: "MongoDB", level: 75 },
+      { icon: <SiMysql />, name: "MySQL", level: 85 },
       { icon: <SiSqlite />, name: "SQLite", level: 95 },
+      { icon: <SiPostgresql />, name: "PostgreSQL", level: 95 },
       { icon: <SiRedis />, name: "Redis", level: 65 },
     ],
   },
   {
-    category: "Other",
+    category: "Cloud & DevOps",
     skills: [
-      { icon: <SiCsharp />, name: "C#", level: 80 },
+      { icon: <SiAmazonaws />, name: "AWS", level: 75 },
+      { icon: <SiMicrosoftazure />, name: "Azure", level: 80 },
+      { icon: <SiFirebase />, name: "Firebase", level: 70 },
+      { icon: <SiDocker />, name: "Docker", level: 85 },
+      { icon: <SiKubernetes />, name: "Kubernetes", level: 70 },
+      { icon: <SiPortainer />, name: "Portainer", level: 65 },
+      { icon: <SiAzuredevops />, name: "Azure DevOps", level: 80 },
+    ],
+  },
+  {
+    category: "Tools & Extensions",
+    skills: [
+      { icon: <SiGit />, name: "Git", level: 95 },
+      { icon: <SiGithub />, name: "GitHub", level: 90 },
+      { icon: <SiGitlab />, name: "GitLab", level: 85 },
     ],
   },
 ];
