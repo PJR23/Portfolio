@@ -36,6 +36,8 @@
 
   --tech-bar-bg: #b9b9b9;
 
+  --language-tag-bg: #e0e0e0;
+
 }
 
 /* Variablen für Dark Mode */
@@ -72,6 +74,8 @@ body.dark-mode {
   --login-form-input: rgba(255, 255, 255, 0.1);
 
   --time-line-item: rgba(255, 255, 255, 0.75);
+
+  --language-tag-bg: #303030;
   
 }
 
@@ -572,6 +576,33 @@ button:focus {
   position: relative !important;
   padding-top: 150px !important;
   padding-bottom: 30px !important;
+  min-height: 100vh;
+} 
+
+.language-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.language-tag {
+  background-color: var(--language-tag-bg); /* Farbe des Tags */
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 2px;
+  font-size: 14px;
+}
+
+.cardtxt {
+  text-align: center;
+}
+
+
+.cardimg {
+  display: flex; /* Flexbox aktivieren */
+  justify-content: center; /* Horizontal zentrieren */
+  align-items: center; /* Vertikal zentrieren */
 }
 
 .project-card {
