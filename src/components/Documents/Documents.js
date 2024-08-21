@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Modal, Alert, Spinner } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
-import Particle from "../Particle";
-import Login from "../Login";
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Modal, Alert, Spinner } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import Particle from '../Particle';
+import Login from '../Login';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import "react-pdf/dist/esm/Page/AnnotationLayer.css";
-import { FiDownload } from "react-icons/fi"; // Icon importiert
+import { pdfjs, Document, Page } from 'react-pdf';
+import { FiDownload } from 'react-icons/fi'; // Icon importiert
+
+// Konfigurieren Sie den PDF.js Worker
+pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 function Documents({ particlesEnabled }) {
   const { t } = useTranslation();
@@ -20,16 +23,37 @@ function Documents({ particlesEnabled }) {
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true); // Zustand für Ladeanzeige
+  const [pdfUrl, setPdfUrl] = useState(null); // Zustand für die PDF-URL
+  const [pdfPageNumber, setPdfPageNumber] = useState(1); // Zustand für die PDF-Seite
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [pdfWidth, setPdfWidth] = useState(window.innerWidth * 0.8);
+  const [pdfHeight, setPdfHeight] = useState(window.innerHeight * 0.8);
+  const [numPages, setNumPages] = useState(null);
+  const [pdfScale, setPdfScale] = useState(1);
+
+
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+  };
+  
+  useEffect(() => {
+    if (isFullscreen) {
+      setPdfWidth(window.innerWidth * 0.8);
+      setPdfHeight(window.innerHeight * 0.8);
+    } else {
+      setPdfWidth(window.innerWidth * 0.3); // oder andere Standardwerte für nicht-Vollbild
+      setPdfHeight(window.innerHeight * 0.4); // oder andere Standardwerte für nicht-Vollbild
+    }
+  }, [isFullscreen]);
 
   const supportedFileTypes = ['pdf', 'jpg', 'jpeg', 'png'];
 
-  // const API_BASE_URL = 'http://localhost:3000';
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
     setWidth(window.innerWidth);
     fetchFiles();
-  }, [role], []);
+  }, [role]);
 
   useEffect(() => {
     if (token) {
@@ -38,13 +62,13 @@ function Documents({ particlesEnabled }) {
       setRole(decodedToken.role);
       const intervalId = startTokenRenewal();
 
-      document.addEventListener("visibilitychange", handleVisibilityChange);
-      window.addEventListener("focus", handleFocus);
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      window.addEventListener('focus', handleFocus);
 
       return () => {
         clearInterval(intervalId);
-        document.removeEventListener("visibilitychange", handleVisibilityChange);
-        window.removeEventListener("focus", handleFocus);
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+        window.removeEventListener('focus', handleFocus);
       };
     } else {
       localStorage.removeItem('token');
@@ -58,7 +82,6 @@ function Documents({ particlesEnabled }) {
       const response = await axios.get(`${API_BASE_URL}/api/files`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      console.log('Files fetched:', response.data); // Überprüfen Sie hier die Antwort
       setFiles(response.data.files);
       setError('');
     } catch (error) {
@@ -82,7 +105,6 @@ function Documents({ particlesEnabled }) {
           'Content-Type': 'multipart/form-data'
         }
       });
-      console.log('File uploaded successfully', response.data);
       fetchFiles();
     } catch (error) {
       console.error('Error uploading file:', error);
@@ -92,19 +114,35 @@ function Documents({ particlesEnabled }) {
     }
   };
 
-  const handlePreview = (filePath) => {
+  const handlePreview = async (filePath) => {
     const ext = filePath.split('.').pop().toLowerCase();
     if (supportedFileTypes.includes(ext)) {
-      if (ext === 'pdf') {
-        window.open(`${API_BASE_URL}/uploads/${filePath}`, '_blank');
-      } else {
-        setPreviewFile(filePath);
-        setShowModal(true);
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/preview?fileName=${filePath}`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+          responseType: 'blob'
+        });
+    
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        if (ext === 'pdf') {
+          setPdfUrl(url); // Setzen Sie die PDF-URL
+          setPreviewFile(null); // Leeren Sie den Bild-URL
+        } else {
+          setPdfUrl(null); // Leeren Sie die PDF-URL
+          setPreviewFile(url);
+        }
+        setShowModal(true); // Zeigen Sie das Modal an
+        // Revoke the object URL after previewing
+        setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+      } catch (error) {
+        console.error('Error previewing file:', error);
+        setError(t('error_preview_not_available'));
       }
     } else {
       setError(t('error_preview_not_available'));
     }
   };
+  
 
   const handleCheckboxChange = (filePath) => {
     setSelectedFiles(prevSelectedFiles =>
@@ -123,7 +161,6 @@ function Documents({ particlesEnabled }) {
             responseType: 'blob'
         });
 
-        // Bestimme den Dateinamen basierend auf der Anzahl der Dateien
         const fileName = selectedFiles.length === 1 ? selectedFiles[0].split('/').pop() : 'files.zip';
 
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -142,8 +179,6 @@ function Documents({ particlesEnabled }) {
     }
   };
 
-
-
   const handleDownloadSelected = () => {
     if (selectedFiles.length > 0) {
       handleDownloadZip(selectedFiles);
@@ -160,7 +195,6 @@ function Documents({ particlesEnabled }) {
   const handleDirectDownload = (filePath) => {
     handleDownloadZip([filePath]);
   };
-
 
   const renewToken = async () => {
     try {
@@ -350,16 +384,80 @@ function Documents({ particlesEnabled }) {
             </>
           )}
         </div>
-        <Modal show={showModal} onHide={() => setShowModal(false)} className="modaldocuments">
+        <Modal 
+          show={showModal} 
+          onHide={() => setShowModal(false)} 
+          className={`${pdfUrl ? 'pdf-modal' : 'modaldocuments'} ${pdfUrl && isFullscreen ? 'fullscreen-dialog' : ''}`}
+        >
           <Modal.Header>
-            <Modal.Title>{t('image_preview')}</Modal.Title>
+            <div className="modal-header-content">
+              <Modal.Title>{t('preview')}</Modal.Title>
+              {pdfUrl && isFullscreen && (
+                <div className="fullscreen-controls">
+                  <label>
+                    {t('scale')}: 
+                    <input 
+                      type="range" 
+                      min="0.5" 
+                      max="3" 
+                      step="0.1" 
+                      value={pdfScale} 
+                      onChange={(e) => setPdfScale(parseFloat(e.target.value))} 
+                      style={{ marginLeft: "10px" }} 
+                    />
+                  </label>
+                </div>
+              )}
+              {pdfUrl && (
+                <div className="fullscreen-button-container">
+                  <Button 
+                    variant="secondary" 
+                    onClick={() => setIsFullscreen(!isFullscreen)}
+                  >
+                    {isFullscreen ? t('exit_fullscreen') : t('fullscreen')}
+                  </Button>
+                </div>
+              )}
+            </div>
           </Modal.Header>
           <Modal.Body>
             <div className="modal-content">
-              {previewFile && <img src={`${API_BASE_URL}/uploads/${previewFile}`} alt={t('image_preview')} style={{ width: '100%', borderRadius: '10px' }} />}
+              {pdfUrl ? (
+                <div className="pdf-container">
+                  <Document
+                    file={pdfUrl}
+                    onLoadError={(error) => console.error('Error loading PDF:', error)}
+                    onLoadSuccess={onDocumentLoadSuccess}
+                  >
+                    {isFullscreen
+                      ? Array.from(new Array(numPages), (el, index) => (
+                        <div key={index} className="pdf-page">
+                          <Page
+                            key={`page_${index + 1}`}
+                            pageNumber={index + 1}
+                            width={pdfWidth * pdfScale} // Skalierung anwenden
+                            height={pdfHeight * pdfScale} // Skalierung anwenden
+                          />
+                        </div>
+                      ))
+                      : <Page pageNumber={1} width={pdfWidth} height={pdfHeight} />
+                    }
+                  </Document>
+                </div>
+              ) : (
+                previewFile ? (
+                  <img src={previewFile} alt={t('image_preview')} style={{ width: '100%', borderRadius: '10px' }} />
+                ) : (
+                  <div>{t('no_preview_available')}</div>
+                )
+              )}
             </div>
           </Modal.Body>
         </Modal>
+
+
+
+
       </Container>
     </div>
   );
