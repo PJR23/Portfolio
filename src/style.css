@@ -395,22 +395,43 @@ button:focus {
   -webkit-user-drag: none;
   border-radius: 200px;
   z-index: 200;
+  position: absolute;
+  bottom: 0;
+  transition: opacity 0.3s ease;
 }
 
+.myAvatar-container:hover .myAvatar-img {
+  opacity: 0;
+}
 
+.myAvatar-img-hover {
+  width: 250px;
+  user-select: none;
+  -webkit-user-drag: none;
+  border-radius: 200px;
+  z-index: 200;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.myAvatar-container:hover .myAvatar-img-hover {
+  opacity: 1;
+}
 
 .myAvatar-circle {
   width: 250px;
   height: 250px;
   border-radius: 200px;
-  z-index: 1;
+  z-index: -1;
   background-color: #8a4ca8;
   position: absolute;
   bottom: 0px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: -2;
 }
+
 
 
 
@@ -1663,75 +1684,118 @@ button:focus {
 
 
 }
+.pdf-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
 
-.pdf-modal .modal-content {
+.nav-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.nav-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.nav-right .btn {
+  margin-left: 5px;
+}
+
+.pdf-preview {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
-  border-radius: 15px;
+}
+
+.pdf-thumbnails {
+  width: 120px;
+  overflow-y: auto;
   background-color: var(--background-color);
+  padding: 10px;
+}
+
+.thumbnail-item {
+  margin-bottom: 10px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.thumbnail-document {
+  user-select: none;
+}
+
+.page-number {
+  font-size: 12px;
+  margin-top: 5px;
+  z-index: 1000;
+  color: yellow;
+}
+
+.pdf-preview {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .pdf-container {
-  width: 100%;
-
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.pdf-container canvas {
+.pdf-page-wrapper {
+  margin-bottom: 200px;
   width: 100%;
-  height: auto;
 }
 
+.tpdf-page-wrapper {
+  margin-bottom: 100px;
+  width: 100%;
+}
 
 .pdf-page {
   width: 100%;
-  margin-bottom: 10px; /* Abstand zwischen den Seiten */
-}
-
-
-
-
-.fullscreen-dialog .modal-dialog {
-  width: 100vw;
-  margin: 0;
-  max-width: 100vw;
+  user-select: none;
 }
 
 .fullscreen-dialog .modal-content {
   height: 100%;
-  width: 100%;
-  border-radius: 0;
+  display: flex;
   background-color: var(--fullscreen-modal-bg);
   backdrop-filter: var(--sticky-blur);
-  padding: 0;
 }
 
+.fullscreen-dialog .pdf-preview {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
 
 .fullscreen-dialog .pdf-container {
-  height: 100%;
-  width: 100%;
+  flex-grow: 1;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  overflow: auto;
-}
-
-.fullscreen-dialog .pdf-container canvas {
-  width: 100%;
-  height: 100%;
-  border-radius: 0;
-}
-
-.modaldocuments .modal-content {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  border-radius: 15px;
-  background-color: var(--background-color) !important;
 }
-
-
 
 .Modal {
   background-color: var(--background-color);
@@ -1913,4 +1977,47 @@ button:focus {
   font-size: 2.4em !important;
   color: #b562d6 !important;
   display:inline!important;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range] {
+	appearance: none;
+	width: 100%;
+	border-radius: 6px;
+	height: 12px;
+	border: 1px solid var(--inbutbar-border);
+	background-color: var(--tech-bar-bg); 
+  color: #000;
+}
+
+input[type=range]::-webkit-slider-thumb {
+	appearance: none;
+	width: 20px;
+	height: 20px; 
+	border-radius: 50%; 
+	background-color: var(--imp-text-color); 
+	cursor: pointer;
+	border: 2px solid #00000024; 
+}
+
+
+input[type=range]::-moz-range-thumb {
+	width: 20px;
+	height: 20px; 
+	border-radius: 50%;
+	background-color: var(--imp-text-color); 
+	cursor: pointer;
+	border: 2px solid #00000024; 
+}
+
+input[type=range]::-ms-thumb {
+	width: 20px; 
+	height: 20px;
+	border-radius: 50%; 
+	background-color: var(--imp-text-color); 
+	cursor: pointer;
+	border: 2px solid #00000024; 
 }

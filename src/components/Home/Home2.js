@@ -10,7 +10,7 @@ import {
 import { FaLinkedinIn } from "react-icons/fa";
 import { useTranslation } from 'react-i18next';
 import pupu from "../../Assets/pupu.png";
-
+import pupuHover from "../../Assets/pupuhover.png";
 
 function Home2() {
   const { t } = useTranslation();
@@ -57,10 +57,14 @@ function Home2() {
             </p>
           </Col>
           <Col md={4} className="myAvtar" style={{ position: "relative", textAlign: "center" }}>
+          <div class="myAvatar-container">
             <Tilt>
-              <img src={pupu} className="myAvatar-img"/>            
-              <div className="myAvatar-circle"  />
+              <img src={pupu} className="myAvatar-img" alt="Avatar" />
+              <img src={pupuHover} className="myAvatar-img-hover" alt="Avatar Hover" />
+              <div className="myAvatar-circle" />
             </Tilt>
+          </div>
+
 
           </Col>
 

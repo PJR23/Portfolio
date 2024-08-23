@@ -10,9 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './i18n';
 import {
   BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate
+  Route, Routes, Navigate
 } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
 import "./style.css";
@@ -21,7 +19,7 @@ import "./App.css";
 function App() {
   const [load, updateLoad] = useState(true);
   const [darkMode, setDarkMode] = useState(true);
-  const [particlesEnabled, setParticlesEnabled] = useState(true);
+  const [particlesEnabled, setParticlesEnabled] = useState(false);  // Default to false
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -34,9 +32,11 @@ function App() {
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     const savedParticles = localStorage.getItem('particles');
+    
     if (savedTheme) {
       setDarkMode(savedTheme === 'dark');
     }
+    
     if (savedParticles) {
       setParticlesEnabled(savedParticles === 'enabled');
     }
