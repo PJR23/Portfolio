@@ -180,5 +180,21 @@
   "KNW295_title": "Modul 295",
   "KNW295_description": "Bewertung Modul 295",
   "KNW335_title": "Modul 335",
-  "KNW335_description": "Bewertung Modul 335"
+  "KNW335_description": "Bewertung Modul 335",
+
+  "footer": {
+
+    "impressum": "Impressum",
+    "impressum_title": "Rechtliche Offenlegung",
+    "impressum_content_line1": "Dies ist die rechtliche Offenlegung für die Portfolio-Website von Paul Rehbein. Im Folgenden finden Sie die gemäss den geltenden Gesetzen erforderlichen Informationen.",
+    "impressum_content_line2": "Autor: Paul Rehbein",
+    "impressum_content_line3": "Adresse: Mühlebachweg 7, 3053 Münchenbuchsee",
+    "impressum_content_line4": "Kontakt: paul.rehbein@proton.me",
+    "impressum_content_line5": "Telefon: +41 79 274 45 06",
+    "impressum_disclaimer_title": "Haftungsausschluss",
+    "impressum_disclaimer_item1": "Klicks auf Links, die zu externen Websites oder Ressourcen führen.",
+    "impressum_disclaimer_item2": "Alle Informationen oder Inhalte, die über externe Links zugänglich sind.",
+    "impressum_disclaimer_item3": "Alle Probleme oder Schäden, die durch die Nutzung externer Websites oder Ressourcen entstehen können.",
+    "impressum_disclaimer_warning": "Obwohl ich mich bemühe, sicherzustellen, dass die Inhalte auf dieser Website genau und aktuell sind, kann ich keine Sicherheit oder Genauigkeit der Inhalte auf verlinkten Seiten garantieren. Nutzen Sie solche Links nach eigenem Ermessen und Risiko. Durch die Nutzung dieser Website erkennen Sie diesen Haftungsausschluss an und stimmen ihm zu."
+  }
 }

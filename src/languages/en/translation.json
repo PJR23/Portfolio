@@ -180,6 +180,21 @@
 
 
 
-  "download": "Download"
+  "download": "Download",
+
+  "footer": {
+    "impressum": "Impressum",
+    "impressum_title": "Legal Disclosure",
+    "impressum_content_line1": "This is the legal disclosure for Paul Rehbein's Portfolio Website. Below is the required information according to applicable laws.",
+    "impressum_content_line2": "Author: Paul Rehbein",
+    "impressum_content_line3": "Address: Mühlebachweg 7, 3053 Münchenbuchsee",
+    "impressum_content_line4": "Contact: paul.rehbein@proton.me",
+    "impressum_content_line5": "Phone: +41 79 274 45 06",
+    "impressum_disclaimer_title": "Disclaimer",
+    "impressum_disclaimer_item1": "Clicking on links that lead to external websites or resources.",
+    "impressum_disclaimer_item2": "Any information or content accessed through external links.",
+    "impressum_disclaimer_item3": "Any issues or damages that may arise from the use of external sites or resources.",
+    "impressum_disclaimer_warning": "While I strive to ensure the content on this site is accurate and up-to-date, I cannot guarantee the security or accuracy of content on linked sites. Use such links at your own discretion and risk. By using this site, you acknowledge and agree to this disclaimer."
+  }
   
 }

@@ -545,6 +545,13 @@ button:focus {
   text-align: center !important;
 }
 
+@media (max-width: 1087px) {
+  .impressumbutton {
+    margin-top: 10px;
+  }
+}
+
+
 @media (max-width: 767px) {
   .footer-copywright {
     text-align: center !important;
@@ -1903,6 +1910,14 @@ button:focus {
 
 .Modal {
   background-color: var(--background-color);
+}
+
+.modal-content{
+  display: flex;
+  justify-content: space-between; /* Platz zwischen den Elementen */
+  padding: 10px; /* Abstand innerhalb des Modals */
+  border-radius: 15px; /* Runde Ecken */
+  background-color: var(--background-color)!important;
 }
 
 .settings-modal .modal-content{
