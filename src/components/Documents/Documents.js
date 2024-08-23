@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Modal, Alert, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Modal, Alert, Spinner, Card } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Particle from '../Particle';
 import Login from '../Login';
@@ -8,65 +8,140 @@ import { useTranslation } from 'react-i18next';
 import { pdfjs, Document, Page } from 'react-pdf';
 import { FiDownload } from 'react-icons/fi';
 
-// Configure the PDF.js worker
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 function Documents({ particlesEnabled }) {
-  const { t } = useTranslation();
-  const [width, setWidth] = useState(1200);
+  const { t, i18n } = useTranslation();
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [role, setRole] = useState(null);
   const [files, setFiles] = useState([]);
-  const [selectedFiles, setSelectedFiles] = useState([]);
   const [previewFile, setPreviewFile] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [pdfUrl, setPdfUrl] = useState(null);
-  const [pdfPageNumber, setPdfPageNumber] = useState(1);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [pdfWidth, setPdfWidth] = useState(window.innerWidth * 0.8);
-  const [pdfHeight, setPdfHeight] = useState(window.innerHeight * 0.8);
-  const [tpdfHeight, settPdfHeight] = useState(window.innerHeight * 0.1);
   const [numPages, setNumPages] = useState(null);
-  const [currentFileName, setCurrentFileName] = useState(''); // New state for file name
+  const [currentFileName, setCurrentFileName] = useState('');
+
+  const supportedFileTypes = ['pdf'];
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
 
 
-  const supportedFileTypes = ['pdf'];
-  // const supportedFileTypes = ['pdf', 'jpg', 'jpeg', 'png'];
-
-
-
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
+  const fileInfo = [
+    {
+      name: 'cv.pdf',
+      Title: t('cv'),
+      description: t('cv_description'),
+      category: 'cv'
+    },
+    {
+      name: 'debi.pdf',
+      Title: t('debi_title'),
+      description: t('debi_description'),
+      category: 'certificates'
+    },
+    {
+      name: 'kred.pdf',
+      Title: t('kred_title'),
+      description: t('kred_description'),
+      category: 'certificates'
+    },
+    {
+      name: 'kurs2.pdf',
+      Title: t('praxis_training_2'),
+      description: t('praxis_training_description'),
+      category: 'gibb_zeugnisse'
+    },
+    {
+      name: 'zeugnisgibb.pdf',
+      Title: t('gibb_zeugnisse'),
+      description: t('zeugnis_gibb_description'),
+      category: 'gibb_zeugnisse'
+    },
+    {
+      name: 'kurs3.pdf',
+      Title: t('praxis_training_3'),
+      description: t('praxis_training_description'),
+      category: 'gibb_zeugnisse'
+    },
+    {
+      name: 'kurs4.pdf',
+      Title: t('praxis_training_4'),
+      description: t('praxis_training_description'),
+      category: 'gibb_zeugnisse'
+    },
+    {
+      name: 'zeugnisbwd.pdf',
+      Title: t('bwd_zeugnis'),
+      description: t('zeugnis_bwd_description'),
+      category: 'bwd_zeugnis'
+    },
+    {
+      name: 'KNW106.pdf',
+      Title: t('KNW106_title'),
+      description: t('KNW106_description'),
+      category: 'überbetriebliche_kurse'
+    },
+    {
+      name: 'KNW187.pdf',
+      Title: t('KNW187_title'),
+      description: t('KNW187_description'),
+      category: 'überbetriebliche_kurse'
+    },
+    {
+      name: 'KNW210.pdf',
+      Title: t('KNW210_title'),
+      description: t('KNW210_description'),
+      category: 'überbetriebliche_kurse'
+    },
+    {
+      name: 'KNW294.pdf',
+      Title: t('KNW294_title'),
+      description: t('KNW294_description'),
+      category: 'überbetriebliche_kurse'
+    },
+    {
+      name: 'KNW295.pdf',
+      Title: t('KNW295_title'),
+      description: t('KNW295_description'),
+      category: 'überbetriebliche_kurse'
+    },
+    {
+      name: 'KNW335.pdf',
+      Title: t('KNW335_title'),
+      description: t('KNW335_description'),
+      category: 'überbetriebliche_kurse'
+    }
+  ];
+  
+  
   useEffect(() => {
-    setWidth(window.innerWidth);
     fetchFiles();
-  }, [role]);
+  }, [role, i18n.language]);
 
   useEffect(() => {
     if (token) {
       try {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const currentTime = Date.now() / 1000;
-  
+
         if (decodedToken.exp < currentTime) {
           setToken(null);
           return;
         }
-  
+
         setRole(decodedToken.role);
         localStorage.setItem('token', token);
         const intervalId = startTokenRenewal();
-  
+
         document.addEventListener('visibilitychange', handleVisibilityChange);
         window.addEventListener('focus', handleFocus);
-  
+
         return () => {
           clearInterval(intervalId);
           document.removeEventListener('visibilitychange', handleVisibilityChange);
@@ -85,9 +160,16 @@ function Documents({ particlesEnabled }) {
     setLoading(true);
     try {
       const response = await axios.get(`${API_BASE_URL}/api/files`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
-      setFiles(response.data.files);
+
+      // Combine fetched files with local info
+      const filesWithInfo = response.data.files.map(file => {
+        const info = fileInfo.find(info => info.name === file.filePath) || {};
+        return { ...file, ...info };
+      });
+
+      setFiles(filesWithInfo);
       setError('');
     } catch (error) {
       console.error('Error fetching files:', error);
@@ -101,35 +183,13 @@ function Documents({ particlesEnabled }) {
     }
   };
 
-  const handleUpload = async (event) => {
-    event.preventDefault();
-    const file = event.target.files[0];
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-      const response = await axios.post(`${API_BASE_URL}/api/upload`, formData, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      fetchFiles();
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      if (error.response && error.response.status === 401) {
-        setToken(null);
-      }
-    }
-  };
-
   const handlePreview = async (filePath) => {
     const ext = filePath.split('.').pop().toLowerCase();
     if (supportedFileTypes.includes(ext)) {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/preview?fileName=${filePath}`, {
-          headers: { 'Authorization': `Bearer ${token}` },
-          responseType: 'blob'
+          headers: { Authorization: `Bearer ${token}` },
+          responseType: 'blob',
         });
 
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -141,7 +201,7 @@ function Documents({ particlesEnabled }) {
           setPdfUrl(null);
           setPreviewFile(url);
         }
-        setCurrentFileName(filePath); // Set the current file name
+        setCurrentFileName(filePath);
         setShowModal(true);
         setTimeout(() => window.URL.revokeObjectURL(url), 1000);
       } catch (error) {
@@ -153,24 +213,21 @@ function Documents({ particlesEnabled }) {
     }
   };
 
-  const handleCheckboxChange = (filePath) => {
-    setSelectedFiles(prevSelectedFiles =>
-      prevSelectedFiles.includes(filePath)
-        ? prevSelectedFiles.filter(file => file !== filePath)
-        : [...prevSelectedFiles, filePath]
-    );
-  };
-
-  const handleDownloadZip = async (selectedFiles) => {
-    if (selectedFiles.length === 0) return;
+  const handleDownloadZip = async (filesToDownload) => {
+    if (filesToDownload.length === 0) return;
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/download-zip`, { files: selectedFiles }, {
-        headers: { 'Authorization': `Bearer ${token}` },
-        responseType: 'blob'
-      });
+      const response = await axios.post(
+        `${API_BASE_URL}/api/download-zip`,
+        { files: filesToDownload },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          responseType: 'blob',
+        }
+      );
 
-      const fileName = selectedFiles.length === 1 ? selectedFiles[0].split('/').pop() : 'files.zip';
+      const fileName =
+        filesToDownload.length === 1 ? filesToDownload[0].split('/').pop() : 'files.zip';
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
@@ -188,14 +245,8 @@ function Documents({ particlesEnabled }) {
     }
   };
 
-  const handleDownloadSelected = () => {
-    if (selectedFiles.length > 0) {
-      handleDownloadZip(selectedFiles);
-    }
-  };
-
   const handleDownloadAll = () => {
-    const allStoredNames = files.map(file => file.filePath);
+    const allStoredNames = files.map((file) => file.filePath);
     if (allStoredNames.length > 0) {
       handleDownloadZip(allStoredNames);
     }
@@ -207,9 +258,13 @@ function Documents({ particlesEnabled }) {
 
   const renewToken = async () => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/renew-token`, {}, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      const response = await axios.post(
+        `${API_BASE_URL}/api/renew-token`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setToken(response.data.token);
       localStorage.setItem('token', response.data.token);
     } catch (error) {
@@ -234,28 +289,18 @@ function Documents({ particlesEnabled }) {
     renewToken();
   };
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const filteredFiles = files.length > 0
-    ? files.filter(file => file.fileName.toLowerCase().includes(searchTerm.toLowerCase()))
-    : [];
+  const groupedFiles = files.reduce((groups, file) => {
+    const category = file.category;
+    if (!groups[category]) {
+      groups[category] = [];
+    }
+    groups[category].push(file);
+    return groups;
+  }, {});
 
   if (!token) {
     return <Login setToken={setToken} />;
   }
-
-  const thumbnailClick = (pageNumber) => {
-    setPdfPageNumber(pageNumber);
-  };
-
-  const scrollToPage = (pageIndex) => {
-    const element = document.getElementById(`page-${pageIndex}`);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   const handleDownloadCurrentFile = () => {
     if (currentFileName) {
@@ -263,204 +308,139 @@ function Documents({ particlesEnabled }) {
     }
   };
 
+
+  const categoryOrder = {
+    cv: 1,
+    gibb_zeugnisse: 2,    
+    überbetriebliche_kurse: 3,
+    bwd_zeugnis: 4,
+    certificates: 5
+  };
+
+  const sortedCategories = Object.keys(groupedFiles).sort((a, b) => categoryOrder[a] - categoryOrder[b]);
+
   return (
     <div>
-      <Container fluid className="resume-section" style={{ minHeight: "100vh" }}>
+      <Container fluid className="resume-section" style={{ minHeight: '100vh' }}>
         {particlesEnabled && <Particle />}
         <div className="docs-container">
-          {role === 'admin' && (
-            <div>
-              <input type="file" onChange={handleUpload} />
-            </div>
-          )}
-          <h1 style={{ fontSize: "2.4em" }}>
+          <h1 style={{ fontSize: '2.4em' }}>
             {t('download_files_title')}
             <strong className="main-name"> {t('files')}</strong>
           </h1>
-          <div id="poda">
-            <div className="glow"></div>
-            <div className="darkBorderBg"></div>
-            <div className="darkBorderBg"></div>
-            <div className="darkBorderBg"></div>
-            <div className="white"></div>
-            <div className="border"></div>
-            <div id="main">
-              <input
-                placeholder={t('search_placeholder')}
-                type="text"
-                name="text"
-                className="inputbar"
-                value={searchTerm}
-                onChange={handleSearch}
-              />
-              <div id="input-mask"></div>
-              <div id="pink-mask"></div>
-              <div className="filterBorder"></div>
-              <div id="filter-icon">
-                <svg
-                  preserveAspectRatio="none"
-                  height="27"
-                  width="27"
-                  viewBox="4.8 4.56 14.832 15.408"
-                  fill="none"
-                >
-                  <path
-                    d="M8.16 6.65002H15.83C16.47 6.65002 16.99 7.17002 16.99 7.81002V9.09002C16.99 9.56002 16.7 10.14 16.41 10.43L13.91 12.64C13.56 12.93 13.33 13.51 13.33 13.98V16.48C13.33 16.83 13.1 17.29 12.81 17.47L12 17.98C11.24 18.45 10.2 17.92 10.2 16.99V13.91C10.2 13.5 9.97 12.98 9.73 12.69L7.52 10.36C7.23 10.08 7 9.55002 7 9.20002V7.87002C7 7.17002 7.52 6.65002 8.16 6.65002Z"
-                    className="filtericoncolor"
-                    stroke-width="1"
-                    stroke-miterlimit="10"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
-              </div>
-              <div id="search-icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke-linejoin="round"
-                  stroke-linecap="round"
-                  height="24"
-                  fill="none"
-                  className="feather feather-search"
-                >
-                  <circle stroke="url(#search)" r="8" cy="11" cx="11"></circle>
-                  <line
-                    stroke="url(#searchl)"
-                    y2="16.65"
-                    y1="22"
-                    x2="16.65"
-                    x1="22"
-                  ></line>
-                  <defs>
-                    <linearGradient gradientTransform="rotate(50)" id="search">
-                      <stop stop-color="#f8e7f8" offset="0%"></stop>
-                      <stop stop-color="#b6a9b7" offset="50%"></stop>
-                    </linearGradient>
-                    <linearGradient id="searchl">
-                      <stop stop-color="#b6a9b7" offset="0%"></stop>
-                      <stop stop-color="#837484" offset="50%"></stop>
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          {loading ? (
-            <div className="loading-container">
-              <Spinner animation="border" role="status" color="#c770f0" className="sr-only">
-                <span></span>
-              </Spinner>
-            </div>
-          ) : (
-            <>
-              {filteredFiles.length === 0 && files.length > 0 && <Alert variant="info">{t('no_files_available')}</Alert>}
-              {error && <Alert variant="danger">{error}</Alert>}
-
-              <br />
-
-              <Row>
-                <Col>
-                  {filteredFiles.map((file, index) => (
-                    <div key={index} className="file-item">
-                      <input
-                        className="file-checkbox"
-                        type="checkbox"
-                        onChange={() => handleCheckboxChange(file.fileName)}
-                      />
-                      <span className="file-name">{file.fileName}</span>
-                      <Button
-                        className="previewbutton"
-                        onClick={() => handlePreview(file.fileName)}
-                        disabled={!supportedFileTypes.includes(file.fileName.split('.').pop().toLowerCase())}
-                      >
-                        {t('preview')}
-                      </Button>
-                      <Button
-                        style={{ margin: "5px" }}
-                        variant="secondary"
-                        onClick={() => handleDirectDownload(file.fileName)}
-                      >
-                        <FiDownload />
-                      </Button>
-                    </div>
-                  ))}
-                </Col>
-              </Row>
-              <Button
-                className="downloadbutton"
-                variant="primary"
-                onClick={handleDownloadSelected}
-                disabled={selectedFiles.length === 0}
-              >
-                {t('download_selected')}
-              </Button>
-
-              <Button
-                variant="secondary"
-                style={{ margin: "5px" }}
-                onClick={handleDownloadAll}
-                disabled={files.length === 0}
-              >
-                {t('download_all')}
-              </Button>
-            </>
+          <Button
+            variant="secondary"
+            style={{ margin: "5px" }}
+            onClick={handleDownloadAll}
+            disabled={files.length === 0}
+          >
+            {t('download_all')}
+          </Button>
+          <div id="poda"></div>
+          {error && (
+            <Alert variant="danger" onClose={() => setError('')} dismissible>
+              {error}
+            </Alert>
           )}
+          <div className="text-center mt-3">
+            {loading ? (
+              <Spinner animation="border" />
+            ) : (
+              <div>
+                {sortedCategories.map((category, index) => (
+                  <div key={index} className="category-section">
+                    <h2 style={{marginBottom: "40px"}}>{t(category)}</h2>
+                    <Row style={{ justifyContent: "center", paddingBottom: "10px" }}>
+                      {groupedFiles[category].map((file, idx) => (
+                        <Col key={idx} md={4} className="mb-3">
+                          <Card className='filecard'>
+                            <Card.Body>
+                              <Card.Title>{file.Title || file.filePath}</Card.Title>
+                              <Card.Text>{file.description || t('no_description')}</Card.Text>
+                              <div className="d-flex justify-content-between">
+                                <Button
+                                  variant="primary"
+                                  onClick={() => handlePreview(file.filePath)}
+                                >
+                                  {t('preview')}
+                                </Button>
+                                <Button
+                                  variant="secondary"
+                                  onClick={() => handleDirectDownload(file.filePath)}
+                                >
+                                  <FiDownload /> {t('download')}
+                                </Button>
+                              </div>
+                            </Card.Body>
+                          </Card>
+                        </Col>
+                      ))}
+                    </Row>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <Button
+            variant="secondary"
+            style={{ margin: "5px" }}
+            onClick={handleDownloadAll}
+            disabled={files.length === 0}
+          >
+            {t('download_all')}
+          </Button>
         </div>
-     
+
         <Modal
           show={showModal}
           onHide={() => setShowModal(false)}
+          className='fullscreen-dialog'
           dialogClassName={isFullscreen ? 'fullscreen-dialog' : ''}
           fullscreen={isFullscreen}
           contentClassName={isFullscreen ? 'fullscreen-content' : ''}
         >
-          <Modal.Header>
-            <div className="pdf-nav">
-              <div className="nav-left">
-                <span className="file-name-header">{currentFileName}</span> {/* Display current file name */}
+            <Modal.Header>
+              <div className="pdf-nav">
+                <div className="nav-left">
+                  <span className="file-name-header">{currentFileName}</span> {/* Display current file name */}
+                </div>
+                <div className="nav-right">                
+                  <Button variant="primary" onClick={() => setShowModal(false)}>
+                    {t('close')}
+                  </Button>
+                  <Button
+                      style={{margin: "5px"}}
+                      variant="secondary"
+                      onClick={handleDownloadCurrentFile}
+                    >
+                      <FiDownload />
+                  </Button>
+                </div>
               </div>
-              <div className="nav-center">
-              </div>
-              <div className="nav-right">                
-                <Button variant="primary" onClick={() => setShowModal(false)}>
-                  {t('close')}
-                </Button>
-                <Button
-                    style={{margin: "5px"}}
-                    variant="secondary"
-                    onClick={handleDownloadCurrentFile}
+            </Modal.Header>
+            <Modal.Body>
+              <div className="pdf-preview">
+                <div className="pdf-container">
+                  <Document
+                    file={pdfUrl}
+                    onLoadSuccess={onDocumentLoadSuccess}
+                    className="pdf-document"
+                    style={{ overflow: "hidden"  }}
                   >
-                    <FiDownload />
-                </Button>
-
+                    {Array.from({ length: numPages }, (_, index) => (
+                      <div key={index} id={`page-${index}`} className="pdf-page-wrapper" style={{ height: "850px"}}>
+                        <Page
+                          pageNumber={index + 1}
+                          className="pdf-page"
+                          style={{ overflow: "hidden"  }}
+                        />
+                      </div>
+                    ))}
+                  </Document>
+                </div>
               </div>
-            </div>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="pdf-preview">
-              <div className="pdf-container">
-                <Document
-                  file={pdfUrl}
-                  onLoadSuccess={onDocumentLoadSuccess}
-                  className="pdf-document"
-                >
-                  {Array.from({ length: numPages }, (_, index) => (
-                    <div key={index} id={`page-${index}`} className="pdf-page-wrapper" style={{ height: pdfHeight }}>
-                      <Page
-                        pageNumber={index + 1}
-                        className="pdf-page"
-                      />
-                    </div>
-                  ))}
-                </Document>
-              </div>
-            </div>
-          </Modal.Body>
-        </Modal>
+            </Modal.Body>
+        </Modal>      
       </Container>
     </div>
   );

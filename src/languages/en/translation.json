@@ -147,5 +147,39 @@
   "Download Abstract": "Download abstract",
 
   "exit_fullscreen": "Exit fullscreen",
-  "fullscreen": "Fullscreen"
+  "fullscreen": "Fullscreen",
+
+  "cv": "Curriculum Vitae",
+  "cv_description": "My resume",
+  "certificates": "Other Certificates",
+  "debi_title": "Debtor Accounting",
+  "kred_title": "Creditor Accounting",
+  "debi_description": "Abacus certificate for debtor accounting",
+  "kred_description": "Abacus certificate for creditor accounting",
+  "praxis_training_2": "Practical Training 2",
+  "praxis_training_description": "Evaluation of Practical Training 2",
+  "gibb_zeugnisse": "Gibb Certificates",
+  "zeugnis_gibb_description": "Certificates for Semesters 1-4",
+  "praxis_training_3": "Practical Training 3",
+  "praxis_training_4": "Practical Training 4",
+  "bwd_zeugnis": "BWD Certificate",
+  "zeugnis_bwd_description": "Certificate for Semesters 1-4",
+  "überbetriebliche_kurse": "Intercompany Courses",
+  "KNW106_title": "Module 106",
+  "KNW106_description": "Evaluation of Module 106",
+  "KNW187_title": "Module 187",
+  "KNW187_description": "Evaluation of Module 187",
+  "KNW210_title": "Module 210",
+  "KNW210_description": "Evaluation of Module 210",
+  "KNW294_title": "Module 294",
+  "KNW294_description": "Evaluation of Module 294",
+  "KNW295_title": "Module 295",
+  "KNW295_description": "Evaluation of Module 295",
+  "KNW335_title": "Module 335",
+  "KNW335_description": "Evaluation of Module 335",
+
+
+
+  "download": "Download"
+  
 }

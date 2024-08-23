@@ -1059,6 +1059,7 @@ button:focus {
   border: 2px solid #8a49a8;
 }
 
+
 .like-item {
   padding-top: 10px !important;
   font-size: 1.1em !important;
@@ -1492,6 +1493,13 @@ button:focus {
   transition: all 0.5s;
 }
 
+.filecard {
+  color: var(--text-color);
+  background: var(--file-item-bg); 
+  border: var(--file-item-border);
+  border-radius: 10px;
+}
+
 .file-name {
   flex: 1;
   margin-left: 50px;
@@ -1760,8 +1768,8 @@ button:focus {
 }
 
 .pdf-page-wrapper {
-  margin-bottom: 200px;
   width: 100%;
+  overflow: hidden;
 }
 
 .tpdf-page-wrapper {

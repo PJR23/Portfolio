@@ -11,7 +11,7 @@
   "theme": "Theme",
   "dark_mode": "Dunkelmodus",
   "light_mode": "Hellmodus",
-  "close": "Schließen",
+  "close": "Schliessen",
 
   "disable_particles": "Partikel deaktivieren",
   "enable_particles": "Partikel aktivieren",
@@ -102,7 +102,7 @@
   "first_website_title": "First Website",
   "first_website_description": "Dies war meine erste Website, die ich erstellt habe, und sie enthält nur HTML, CSS und ein wenig JavaScript. Ich habe sie im ersten Jahr meiner Ausbildung im Praxistraining erstellt, und sie diente dazu, sich anderen vorzustellen.",
   "m293_website_title": "M293-Modul-Website",
-  "m293_website_description": "Diese Website wurde im Rahmen des M293-Moduls an der GIBB erstellt. Für das Projekt habe ich JavaScript, CSS und HTML verwendet und einen privaten Bereich mit JavaScript implementiert. Die Website enthält außerdem eine Uhr, die die Systemzeit anzeigt und mit JavaScript und CSS erstellt wurde.",
+  "m293_website_description": "Diese Website wurde im Rahmen des M293-Moduls an der GIBB erstellt. Für das Projekt habe ich JavaScript, CSS und HTML verwendet und einen privaten Bereich mit JavaScript implementiert. Die Website enthält ausserdem eine Uhr, die die Systemzeit anzeigt und mit JavaScript und CSS erstellt wurde.",
   "studypal_title": "StudyPal",
   "studypal_description": "Dies ist eine Android-App, die mit React Native erstellt wurde. Sie soll Ihnen helfen, Vokabeln wie mit Quizlet zu lernen. Sie können Sets und Karten für diese Sets erstellen, und es gibt einen Lernmodus, bei dem Sie entweder durch das Umdrehen von Karten lernen oder im Frage-und-Antwort-Modus, in dem Sie die richtige Antwort schreiben müssen.",
   
@@ -149,5 +149,36 @@
   "Download Abstract": "Download Abstract",
 
   "exit_fullscreen": "Vollbild beenden",
-  "fullscreen": "Vollbild"
+  "fullscreen": "Vollbild",
+
+  "download": "Download",
+
+  "cv": "Lebenslauf",
+  "cv_description": "Mein Lebenslauf",
+  "certificates": "Zertifikate",
+  "debi_title": "Debitorenbuchhaltung",
+  "kred_title": "Kreditorenbuchhaltung",
+  "debi_description": "Abacus Zertifikat für Debitorenbuchhaltung",
+  "kred_description": "Abacus Zertifikat für Kreditorenbuchhaltung",
+  "praxis_training_2": "Praxistraining 2",
+  "praxis_training_description": "Bewertung des Praxistrainings 2",
+  "gibb_zeugnisse": "Gibb Zeugnisse",
+  "zeugnis_gibb_description": "Zeugnisse für Semester 1-4",
+  "praxis_training_3": "Praxistraining 3",
+  "praxis_training_4": "Praxistraining 4",
+  "bwd_zeugnis": "BWD Zeugnis",
+  "zeugnis_bwd_description": "Zeugnis für Semester 1-4",
+  "überbetriebliche_kurse": "Überbetriebliche Kurse",
+  "KNW106_title": "Modul 106",
+  "KNW106_description": "Bewertung Modul 106",
+  "KNW187_title": "Modul 187",
+  "KNW187_description": "Bewertung Modul 187",
+  "KNW210_title": "Modul 210",
+  "KNW210_description": "Bewertung Modul 210",
+  "KNW294_title": "Modul 294",
+  "KNW294_description": "Bewertung Modul 294",
+  "KNW295_title": "Modul 295",
+  "KNW295_description": "Bewertung Modul 295",
+  "KNW335_title": "Modul 335",
+  "KNW335_description": "Bewertung Modul 335"
 }
