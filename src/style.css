@@ -1531,6 +1531,102 @@ button:focus {
 /* About extra */
 /* --------- */
 
+.item1 {
+  position: absolute;
+  top: 0; /* Start unterhalb des Containers */
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: url('./Assets/career/1.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: 0.5s all;
+  border-radius: 6px;
+}
+
+.timeline-content:hover .item1 {
+  opacity: 1;
+}
+
+.item2 {
+  position: absolute;
+  top: 0; /* Start unterhalb des Containers */
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: url('./Assets/career/2.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: 0.5s all;
+  border-radius: 6px;
+}
+
+.timeline-content:hover .item2 {
+  opacity: 1;
+}
+
+.item3 {
+  position: absolute;
+  top: 0; /* Start unterhalb des Containers */
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: url('./Assets/career/3.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: 0.5s all;
+  border-radius: 6px;
+}
+
+.timeline-content:hover .item3 {
+  opacity: 1;
+}
+
+.item4 {
+  position: absolute;
+  top: 0; /* Start unterhalb des Containers */
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: url('./Assets/career/4.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: 0.5s all;
+  border-radius: 6px;
+}
+
+.timeline-content:hover .item4 {
+  opacity: 1;
+}
+
+.item5 {
+  position: absolute;
+  top: 0; /* Start unterhalb des Containers */
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: url('./Assets/career/5.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: 0.5s all;
+  border-radius: 6px;
+}
+
+.timeline-content:hover .item5 {
+  opacity: 1;
+}
+
+
 /* Die Timeline-Klasse, die speziell für die Timeline-Komponente verwendet wird */
 .timeline-container {
   position: relative;
