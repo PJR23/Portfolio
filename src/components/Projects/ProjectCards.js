@@ -22,7 +22,7 @@ function ProjectCards(props) {
             )}
         
         <div className="cardimg">
-          <Card.Img variant="top" src={props.imgPath} alt="card-img" style={{ maxHeight: "260px", width: "auto" }} />
+          <Card.Img variant="top" src={props.imgPath} alt="card-img" />
         </div>
         <Card.Title>{props.title}</Card.Title>
         <Card.Text className={"cardtxt"}>

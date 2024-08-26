@@ -608,9 +608,9 @@ button:focus {
 
 
 .cardimg {
-  display: flex; /* Flexbox aktivieren */
-  justify-content: center; /* Horizontal zentrieren */
-  align-items: center; /* Vertikal zentrieren */
+  display: flex; 
+  justify-content: center;
+  align-items: center;
 }
 
 .project-card {
