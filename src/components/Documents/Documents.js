@@ -360,6 +360,7 @@ function Documents({ particlesEnabled }) {
                               <div className="d-flex justify-content-between">
                                 <Button
                                   variant="primary"
+                                  className='previewbutton'
                                   onClick={() => handlePreview(file.filePath)}
                                 >
                                   {t('preview')}

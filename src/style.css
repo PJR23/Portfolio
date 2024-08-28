@@ -26,6 +26,8 @@
   --language-tag-bg: #e0e0e0;
 
   --fullscreen-modal-bg: rgba(255, 255, 255, 0.8) ;
+
+  --scrollbar-track: #a9a9a9;
 }
 
 /* Variablen für Dark Mode */
@@ -57,6 +59,8 @@ body.dark-mode {
   --language-tag-bg: #303030;
   
   --fullscreen-modal-bg: #0000007e;
+
+  --scrollbar-track: #2d1950;
 }
 
 
@@ -135,7 +139,7 @@ button:focus {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #2d1950;
+  background: var(--scrollbar-track);
 }
 
 /* Handle */
@@ -628,6 +632,9 @@ button:focus {
   transition: all 0.5s ease 0s !important;
   height: 100% !important;
 }
+
+
+
 .project-card-view:hover {
   transform: scale(1.02) !important;
   overflow: hidden !important;
@@ -1516,6 +1523,12 @@ button:focus {
 
 .downloadbutton {
   margin: 5px;
+}
+
+@media (max-width: 660px) {
+  .previewbutton {
+    display: none !important;
+  }
 }
 
 @media (max-width: 500px) {
