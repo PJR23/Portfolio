@@ -357,9 +357,10 @@ function Documents({ particlesEnabled }) {
                             <Card.Body>
                               <Card.Title>{file.Title || file.filePath}</Card.Title>
                               <Card.Text>{file.description || t('no_description')}</Card.Text>
-                              <div className="d-flex justify-content-between">
+                              <div className="d-flex justify-content-center">
                                 <Button
                                   variant="primary"
+                                  style={{margin: "10px"}}
                                   className='previewbutton'
                                   onClick={() => handlePreview(file.filePath)}
                                 >
@@ -367,6 +368,7 @@ function Documents({ particlesEnabled }) {
                                 </Button>
                                 <Button
                                   variant="secondary"
+                                  style={{margin: "10px"}}
                                   onClick={() => handleDirectDownload(file.filePath)}
                                 >
                                   <FiDownload /> {t('download')}
